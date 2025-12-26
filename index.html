@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistem Transaksi Pembayaran</title>
+    <link rel="stylesheet" href="stayle.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>
+          <i class="fas fa-cash-register"></i> Sistem Transaksi Pembayaran
+        </h1>
+        <p class="subtitle">Lakukan pembayaran dengan mudah dan aman</p>
+      </header>
+
+      <div class="app-container">
+        <div class="transaction-section">
+          <div class="payment-methods">
+            <h2><i class="fas fa-credit-card"></i> Metode Pembayaran</h2>
+            <div class="methods-grid">
+              <div class="method-card selected" data-method="credit-card">
+                <i class="fas fa-credit-card"></i>
+                <span>Kartu Kredit</span>
+              </div>
+              <div class="method-card" data-method="bank-transfer">
+                <i class="fas fa-university"></i>
+                <span>Transfer Bank</span>
+              </div>
+              <div class="method-card" data-method="e-wallet">
+                <i class="fas fa-wallet"></i>
+                <span>E-Wallet</span>
+              </div>
+              <div class="method-card" data-method="scan">
+                <i class="fas fa-qrcode"></i>
+                <span>Scan / Barcode</span>
+              </div>
+              <div class="method-card" data-method="cash">
+                <i class="fas fa-money-bill-wave"></i>
+                <span>Tunai</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="payment-form">
+            <h2><i class="fas fa-receipt"></i> Detail Transaksi</h2>
+            <div class="form-group">
+              <label for="amount"
+                ><i class="fas fa-dollar-sign"></i> Jumlah Pembayaran</label
+              >
+              <div class="input-with-icon">
+                <input
+                  type="number"
+                  id="amount"
+                  placeholder="Masukkan jumlah"
+                  min="1000"
+                  step="1000"
+                  value="50000"
+                />
+                <span class="currency">IDR</span>
+              </div>
+            </div>
+
+            <div id="credit-card-form" class="method-form active">
+              <h3>Detail Kartu Kredit</h3>
+              <div class="form-group">
+                <label for="card-number">Nomor Kartu</label>
+                <input
+                  type="text"
+                  id="card-number"
+                  placeholder="1234 5678 9012 3456"
+                  maxlength="19"
+                />
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="expiry-date">Tanggal Kedaluwarsa</label>
+                  <input
+                    type="text"
+                    id="expiry-date"
+                    placeholder="MM/YY"
+                    maxlength="5"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="cvv">CVV</label>
+                  <input
+                    type="password"
+                    id="cvv"
+                    placeholder="123"
+                    maxlength="3"
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="card-name">Nama di Kartu</label>
+                <input type="text" id="card-name" placeholder="Nama Lengkap" />
+              </div>
+            </div>
+
+            <div id="bank-transfer-form" class="method-form">
+              <h3>Detail Transfer Bank</h3>
+              <div class="form-group">
+                <label for="bank-select">Pilih Bank</label>
+                <select id="bank-select">
+                  <option value="bca">BCA - Bank Central Asia</option>
+                  <option value="mandiri">Bank Mandiri</option>
+                  <option value="bni">BNI - Bank Negara Indonesia</option>
+                  <option value="bri">BRI - Bank Rakyat Indonesia</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="virtual-account">Nomor Rekening Virtual</label>
+                <input
+                  type="text"
+                  id="virtual-account"
+                  class="virtual-account"
+                  placeholder="Masukkan nomor rekening virtual"
+                  value="8880 1234 5678 9012"
+                />
+                <p class="info-text">
+                  Masukkan nomor rekening virtual yang diberikan oleh bank
+                </p>
+              </div>
+            </div>
+
+            <div id="scan-form" class="method-form">
+              <h3>Scan QR/Barcode</h3>
+              <div class="form-group">
+                <label>Pilih Tipe Scan</label>
+                <div class="form-row">
+                  <button
+                    type="button"
+                    id="scan-qr-btn"
+                    class="btn-primary small"
+                  >
+                    Pindai QR
+                  </button>
+                  <button
+                    type="button"
+                    id="scan-barcode-btn"
+                    class="btn-primary small"
+                  >
+                    Pindai Barcode
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Preview Kamera</label>
+                <video
+                  id="scan-video"
+                  class="scan-video"
+                  autoplay
+                  playsinline
+                  muted
+                  style="display: none"
+                ></video>
+                <img
+                  id="scan-image"
+                  class="scan-image"
+                  src="tugass.png"
+                  alt="tugass"
+                  style="display: none"
+                />
+              </div>
+
+              <div class="form-group">
+                <label>Hasil Scan</label>
+                <div id="scan-result" class="scan-result">-</div>
+              </div>
+
+              <canvas id="scan-canvas" style="display: none"></canvas>
+            </div>
+
+            <div id="e-wallet-form" class="method-form">
+              <h3>Detail E-Wallet</h3>
+              <div class="form-group">
+                <label for="ewallet-select">Pilih E-Wallet</label>
+                <select id="ewallet-select">
+                  <option value="gopay">GoPay</option>
+                  <option value="ovo">OVO</option>
+                  <option value="dana">DANA</option>
+                  <option value="shopeepay">ShopeePay</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="phone-number">Nomor Telepon</label>
+                <input
+                  type="tel"
+                  id="phone-number"
+                  placeholder="08xxxxxxxxxx"
+                />
+              </div>
+            </div>
+
+            <div id="cash-form" class="method-form">
+              <h3>Pembayaran Tunai</h3>
+              <p class="info-text">
+                Pembayaran tunai dapat dilakukan langsung di kasir.
+              </p>
+            </div>
+
+            <button id="process-payment" class="btn-primary">
+              <i class="fas fa-lock"></i> Proses Pembayaran
+            </button>
+          </div>
+        </div>
+
+        <div class="receipt-section">
+          <h2><i class="fas fa-file-invoice"></i> Struk Pembayaran</h2>
+          <div class="receipt">
+            <div class="receipt-header">
+              <div class="store-name">Toko Nikol</div>
+              <div class="receipt-id">
+                ID: <span id="transaction-id">TRX-001234</span>
+              </div>
+            </div>
+
+            <div class="receipt-details">
+              <div class="detail-row">
+                <span class="label">Tanggal</span>
+                <span class="value" id="transaction-date">01/01/2023</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">Waktu</span>
+                <span class="value" id="transaction-time">10:30:15</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">Metode</span>
+                <span class="value" id="transaction-method">Kartu Kredit</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">Status</span>
+                <span class="value status pending" id="transaction-status"
+                  >Menunggu</span
+                >
+              </div>
+              <div class="detail-row">
+                <span class="label">Kode Scan</span>
+                <span class="value" id="scan-code">-</span>
+              </div>
+              <div class="divider"></div>
+              <div class="detail-row total">
+                <span class="label">Total Pembayaran</span>
+                <span class="value" id="transaction-amount">Rp 50.000</span>
+              </div>
+            </div>
+
+            <div class="receipt-footer">
+              <p>Terima kasih telah berbelanja di toko kami!</p>
+              <p class="footer-note">
+                Simpan struk ini sebagai bukti pembayaran
+              </p>
+            </div>
+          </div>
+
+          <div class="transaction-history">
+            <h3><i class="fas fa-history"></i> Riwayat Transaksi</h3>
+            <div class="history-list">
+              <!-- Riwayat transaksi akan ditambahkan via JavaScript -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="notification" id="notification">
+        <div class="notification-content">
+          <i class="fas fa-check-circle"></i>
+          <span id="notification-message">Pembayaran berhasil diproses!</span>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+    <script src="stayle.js"></script>
+  </body>
+</html>
